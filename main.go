@@ -11,8 +11,9 @@ func main() {
 	defer config.CloseDB()
 
 	router := gin.Default()
-	routes.RegisterUserRoutes(router)
   routes.RegisterStaticRoutes(router)
+	routes.RegisterUserRoutes(router)
+  routes.RegisterCoralRoutes(router)
 
 	router.Run(":8080")
 }

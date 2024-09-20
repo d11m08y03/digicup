@@ -11,6 +11,39 @@
   <!-- Leaflet.js JavaScript -->
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
+  <script>
+    function updateLoginButton() {
+      const token = localStorage.getItem('token');
+      const loginButton = document.getElementById('login-btn');
+      const dashboardButton = document.getElementById('dashboard-btn');
+
+      if (token) {
+        loginButton.textContent = 'Logout';
+        loginButton.classList.remove('text-blue-500', 'bg-white', 'border-blue-500');
+        loginButton.classList.add('bg-red-500', 'text-white');
+
+        dashboardButton.style.display = 'inline-block';
+
+        loginButton.onclick = function () {
+          localStorage.removeItem('token');
+          window.location.href = '/coral/login';
+        };
+      } else {
+        loginButton.textContent = 'Login';
+        loginButton.classList.remove('bg-red-500', 'text-white');
+        loginButton.classList.add('bg-white', 'text-blue-500', 'border', 'border-blue-500');
+
+        dashboardButton.style.display = 'none';
+
+        loginButton.onclick = function () {
+          window.location.href = '/coral/login';
+        };
+      }
+    }
+
+    window.onload = updateLoginButton;
+  </script>
+
   <style>
     /* Modal Background */
     #adoptModal {
@@ -53,15 +86,16 @@
   <!-- Floating Rounded Navbar at the Top -->
   <nav
     class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-blue-500 shadow-lg py-3 px-6 rounded-full flex space-x-8 items-center z-50">
-    <a href="/coralHome"
+    <a href="/coral/home"
       class="text-white hover:bg-blue-600 px-4 py-2 rounded-full transition-colors duration-300">Home</a>
-    <a href="/about"
+    <a href="/coral/about"
       class="text-white hover:bg-blue-600 px-4 py-2 rounded-full transition-colors duration-300">About</a>
-    <a href="/contact"
+    <a href="/coral/contact"
       class="text-white hover:bg-blue-600 px-4 py-2 rounded-full transition-colors duration-300">Contact</a>
-    <a href="/login"
+    <a href="/coral/dashboard" id="dashboard-btn" style="display: none;"
+      class="text-white hover:bg-blue-600 px-4 py-2 rounded-full transition-colors duration-300">Dashboard</a>
+    <a href="/coral/login" id="login-btn"
       class="bg-white text-blue-500 border border-blue-500 px-6 py-2 rounded-full hover:bg-blue-600 hover:text-white transition-colors duration-300">Login</a>
-
   </nav>
 
   <!-- Main Section -->
@@ -251,10 +285,6 @@
         <p>&copy; 2024 Noulacote. All rights reserved.</p>
       </div>
     </footer>
-
-
-
-
 
     <!-- JavaScript for Modal -->
     <script>
