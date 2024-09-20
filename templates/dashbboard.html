@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coral Adoption Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <style>
+    body {
+      background-color: #f0f4f8;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Unique card styles */
+    .card {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 500px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <body class="bg-white text-gray-900">
+    <!-- Floating Rounded Navbar at the Top -->
+    <nav
+      class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-blue-500 shadow-lg py-3 px-6 rounded-full flex space-x-8 items-center z-50">
+      <a href="/coralHome"
+        class="text-white hover:bg-blue-600 px-4 py-2 rounded-full transition-colors duration-300">Home</a>
+      <a href="/about"
+        class="text-white hover:bg-blue-600 px-4 py-2 rounded-full transition-colors duration-300">About</a>
+      <a href="/contact"
+        class="text-white hover:bg-blue-600 px-4 py-2 rounded-full transition-colors duration-300">Contact</a>
+      <a href="/login"
+        class="bg-white text-blue-500 border border-blue-500 px-6 py-2 rounded-full hover:bg-blue-600 hover:text-white transition-colors duration-300">Login</a>
+    </nav>
+
+
+    <!-- Dashboard Header -->
+    <header class="bg-white text-blue-600 p-6 shadow-lg">
+      <div class="container mx-auto">
+        <h1 class="text-4xl font-bold">Welcome to Coral Adoption Dashboard</h1>
+        <p class="mt-2 text-xl">Manage and monitor the health of your adopted corals.</p>
+      </div>
+    </header>
+
+    <!-- Main Dashboard Section -->
+    <main class="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
+      <!-- Top Token and Plan Visit Section (3-column layout) -->
+      <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <!-- Token Balance -->
+        <div class="card text-center p-4 bg-white rounded-lg shadow-lg">
+          <h3 class="text-2xl font-bold text-green-600">Token Balance</h3>
+          <p class="text-4xl font-extrabold mt-2">50 Tokens</p>
+          <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-full">Redeem Tokens</button>
+        </div>
+
+        <!-- Plan a Visit -->
+        <div class="card text-center p-4 bg-white rounded-lg shadow-lg">
+          <h3 class="text-xl font-bold text-blue-600">Plan a Visit to Your Coral</h3>
+          <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-full">Plan Visit</button>
+        </div>
+
+        <!-- Donate Funds -->
+        <div class="card text-center p-4 bg-white rounded-lg shadow-lg">
+          <h3 class="text-xl font-bold text-blue-600">Donate Funds for Coral Care</h3>
+          <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-full">Donate Now</button>
+        </div>
+      </section>
+
+      <!-- Coral Info and Functional Components Section (2-column layout) -->
+      <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Coral Information -->
+        <div class="card p-4 bg-white rounded-lg shadow-lg">
+          <h3 class="text-xl font-bold text-blue-600">Saddle Carpet Anemone</h3>
+          <img src="/static/image/c8.jpg" alt="Coral Image" class="rounded-lg mt-4">
+          <p class="text-gray-600 mt-2">Location: Black River, Mauritius</p>
+          <p class="text-green-600 font-bold mt-4">Status: Healthy</p>
+          <div class="mt-4 bg-gray-200 rounded-full h-2">
+            <div class="bg-green-500 h-full rounded-full" style="width: 85%;"></div>
+          </div>
+          <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-full">View Full Report</button>
+        </div>
+
+        <!-- Right Panel: Live Cam, CO2 Calculator, AI Detection -->
+        <div class="flex flex-col gap-6">
+          <!-- Live Coral Cam -->
+          <!-- Coral Live Cam Section -->
+          <section class="bg-white p-4 rounded-lg shadow-lg mt-10 max-w-md mx-auto">
+            <div class="flex justify-between items-center">
+              <h3 class="text-xl font-bold text-blue-600">Live Coral Cam</h3>
+              <span class="bg-green-500 text-white px-2 py-1 rounded-full">Live</span>
+            </div>
+            <p class="text-gray-600 mb-4">Experience your coral underwater through live or pre-recorded footage.</p>
+
+            <div class="video-container">
+              <!-- Local video file with HTML5 video element -->
+              <video class="w-full h-56 object-cover rounded-lg shadow-lg" controls autoplay muted>
+                <source src="/static/video/feeding.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </section>
+
+
+          <!-- CO2 Offset Calculator -->
+          <section class="bg-white p-4 rounded-lg shadow-lg">
+            <h3 class="text-xl font-bold text-blue-600">Coral Carbon Offset Calculator</h3>
+            <div class="mb-4">
+              <label for="adoptionDuration" class="block text-gray-700">Adoption Duration (in years)</label>
+              <input type="number" id="adoptionDuration" class="w-full p-2 border rounded-lg"
+                placeholder="Enter duration in years" value="1">
+            </div>
+            <div class="mb-4">
+              <label for="coralHealth" class="block text-gray-700">Coral Health Status</label>
+              <select id="coralHealth" class="w-full p-2 border rounded-lg">
+                <option value="1">Healthy (100%)</option>
+                <option value="0.75">Moderately Healthy (75%)</option>
+                <option value="0.5">Critical (50%)</option>
+              </select>
+            </div>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-lg w-full"
+              onclick="calculateCarbonOffset()">Calculate CO2 Offset</button>
+            <p id="co2Result" class="mt-4 text-green-600 text-xl font-bold">CO2 Offset: 0 kg</p>
+          </section>
+
+          <!-- AI Disease Detection -->
+          <section class="bg-white p-4 rounded-lg shadow-lg">
+            <h3 class="text-xl font-bold text-blue-600">AI Disease Detection</h3>
+            <div class="mb-4">
+              <label class="block text-gray-700">Upload a picture of your coral for disease analysis:</label>
+              <input type="file" class="w-full p-2 border rounded-lg" id="coralImage">
+            </div>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-lg w-full" onclick="analyzeCoral()">Analyze
+              Coral</button>
+            <p id="aiResult" class="mt-4 text-green-600 text-xl">Status: Healthy (AI Result)</p>
+          </section>
+        </div>
+      </section>
+      <!-- Map Section -->
+      <section class="mb-10">
+        <h2 class="text-3xl font-bold mb-6">Coral Location</h2>
+        <div id="map" class="rounded-lg shadow-lg mt-4" style="height: 300px;"></div>
+      </section>
+
+      <!-- Plan Visit Modal -->
+      <div id="visitModal" class="modal">
+        <div class="modal-content">
+          <h3 class="text-2xl font-bold mb-4">Plan Your Visit</h3>
+          <p class="text-gray-600 mb-4">Select a date to visit your coral.</p>
+          <input type="date" class="w-full p-2 border rounded-lg mb-4">
+          <button class="bg-blue-500 text-white px-4 py-2 rounded-full w-full">Confirm Visit</button>
+          <button class="mt-4 bg-gray-300 text-black px-4 py-2 rounded-full w-full"
+            onclick="closeModal('visitModal')">Close</button>
+        </div>
+      </div>
+
+      <!-- Donate Modal -->
+      <div id="donateModal" class="modal">
+        <div class="modal-content">
+          <h3 class="text-2xl font-bold mb-4">Donate Funds</h3>
+          <p class="text-gray-600 mb-4">Enter the amount you want to donate to support your coral.</p>
+          <input type="number" placeholder="Enter amount" class="w-full p-2 border rounded-lg mb-4">
+          <button class="bg-blue-500 text-white px-4 py-2 rounded-full w-full">Donate Now</button>
+          <button class="mt-4 bg-gray-300 text-black px-4 py-2 rounded-full w-full"
+            onclick="closeModal('donateModal')">Close</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-blue-500 text-white p-6 mt-8">
+      <div class="container mx-auto text-center">
+        <p>&copy; 2024 Nou Lacote. All rights reserved.</p>
+      </div>
+    </footer>
+
+
+    <!-- JavaScript for Modal, Map, and AI Detection -->
+    <script>
+      function openModal(modalId) {
+        document.getElementById(modalId).style.display = 'flex';
+      }
+
+      function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+      }
+
+      // Initialize Map
+      var map = L.map('map').setView([-20.4390, 57.3176], 12);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(map);
+
+      // Add markers for coral locations
+      var coralLocations = [
+        {lat: -20.4374, lng: 57.3132, name: 'Saddle Carpet Anemone'},
+      ];
+
+      coralLocations.forEach(function (coral) {
+        L.marker([coral.lat, coral.lng]).addTo(map)
+          .bindPopup('<b>' + coral.name + '</b>');
+      });
+
+      // AI Disease Detection (Mock Submission)
+      document.getElementById('aiDetectionForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const result = document.getElementById('aiResult');
+        const imageFile = document.getElementById('coralImage').files[0];
+        if (imageFile) {
+          // Mock AI result after image submission (replace this with your AI API)
+          result.textContent = 'AI is analyzing the image... (Mock result: Coral is healthy!)';
+          result.classList.remove('text-green-600');
+          result.classList.add('text-blue-600');
+        } else {
+          result.textContent = 'Please upload an image of your coral.';
+          result.classList.remove('text-green-600');
+          result.classList.add('text-red-600');
+        }
+      });
+    </script>
+
+  </body>
+
+</html>
