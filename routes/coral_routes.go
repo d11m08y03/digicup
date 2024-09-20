@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"github.com/d11m08y03/digicup/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,7 +23,6 @@ func RegisterCoralRoutes(router *gin.Engine) {
 		ctx.File("templates/loginpage.html")
 	})
 
-	coralRoutes.Use(middleware.JWTAuthMiddleware())
 	coralRoutes.GET("/dashboard", func(ctx *gin.Context) {
 		ctx.File("templates/dashboard.html")
 	})

@@ -109,7 +109,7 @@
 
         if (response.ok) {
           localStorage.setItem('token', data.token);
-          window.location.href = "/dashboard";
+          window.location.href = "/coral/dashboard";
         } else {
           alert('Login Failed: ' + data.error);
         }

@@ -49,6 +49,39 @@
       max-width: 500px;
     }
   </style>
+
+  <script>
+    function updateLoginButton() {
+      const token = localStorage.getItem('token');
+      const loginButton = document.getElementById('login-btn');
+      const dashboardButton = document.getElementById('dashboard-btn');
+
+      if (token) {
+        loginButton.textContent = 'Logout';
+        loginButton.classList.remove('text-blue-500', 'bg-white', 'border-blue-500');
+        loginButton.classList.add('bg-red-500', 'text-white');
+
+        dashboardButton.style.display = 'inline-block';
+
+        loginButton.onclick = function () {
+          localStorage.removeItem('token');
+          window.location.href = '/coral/login';
+        };
+      } else {
+        loginButton.textContent = 'Login';
+        loginButton.classList.remove('bg-red-500', 'text-white');
+        loginButton.classList.add('bg-white', 'text-blue-500', 'border', 'border-blue-500');
+
+        dashboardButton.style.display = 'none';
+
+        loginButton.onclick = function () {
+          window.location.href = '/coral/login';
+        };
+      }
+    }
+
+    window.onload = updateLoginButton;
+  </script>
 </head>
 
 <body>
@@ -63,8 +96,9 @@
         class="text-white hover:bg-blue-600 px-4 py-2 rounded-full transition-colors duration-300">About</a>
       <a href="/coral/contact"
         class="text-white hover:bg-blue-600 px-4 py-2 rounded-full transition-colors duration-300">Contact</a>
-      <a href="/coral/dashboard" id="dashboard-btn" class="text-white hover:bg-blue-600 px-4 py-2 rounded-full transition-colors duration-300">Dashboard</a>
-      <a href="/coral/login"
+      <a href="/coral/dashboard" id="dashboard-btn"
+        class="text-white hover:bg-blue-600 px-4 py-2 rounded-full transition-colors duration-300">Dashboard</a>
+      <a href="/coral/login" id="login-btn"
         class="bg-white text-blue-500 border border-blue-500 px-6 py-2 rounded-full hover:bg-blue-600 hover:text-white transition-colors duration-300">Login</a>
     </nav>
 
@@ -106,7 +140,7 @@
         <!-- Coral Information -->
         <div class="card p-4 bg-white rounded-lg shadow-lg">
           <h3 class="text-xl font-bold text-blue-600">Saddle Carpet Anemone</h3>
-          <img src="/static/image/c8.jpg" alt="Coral Image" class="rounded-lg mt-4">
+          <img src="/static/c8.jpg" alt="Coral Image" class="rounded-lg mt-4">
           <p class="text-gray-600 mt-2">Location: Black River, Mauritius</p>
           <p class="text-green-600 font-bold mt-4">Status: Healthy</p>
           <div class="mt-4 bg-gray-200 rounded-full h-2">
@@ -129,7 +163,7 @@
             <div class="video-container">
               <!-- Local video file with HTML5 video element -->
               <video class="w-full h-56 object-cover rounded-lg shadow-lg" controls autoplay muted>
-                <source src="/static/video/feeding.mp4" type="video/mp4">
+                <source src="/static/feeding.mp4" type="video/mp4">
                 Your browser does not support the video tag.
               </video>
             </div>
@@ -208,6 +242,40 @@
       </div>
     </footer>
 
+    <script>
+      function analyzeCoral() {
+        const input = document.getElementById('coralImage');
+        const file = input.files[0];
+
+        if (!file) {
+          alert("Please upload an image file.");
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append('image', file);
+
+        fetch('http://localhost:8080/ai/upload', {
+          method: 'POST',
+          body: formData,
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log(data);
+            document.getElementById('aiResult').innerText = `Status: ${data.result}`;
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('aiResult').innerText = 'Status: Error occurred during analysis.';
+          });
+      }
+    </script>
+
 
     <!-- JavaScript for Modal, Map, and AI Detection -->
     <script>
@@ -236,21 +304,21 @@
       });
 
       // AI Disease Detection (Mock Submission)
-      document.getElementById('aiDetectionForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-        const result = document.getElementById('aiResult');
-        const imageFile = document.getElementById('coralImage').files[0];
-        if (imageFile) {
-          // Mock AI result after image submission (replace this with your AI API)
-          result.textContent = 'AI is analyzing the image... (Mock result: Coral is healthy!)';
-          result.classList.remove('text-green-600');
-          result.classList.add('text-blue-600');
-        } else {
-          result.textContent = 'Please upload an image of your coral.';
-          result.classList.remove('text-green-600');
-          result.classList.add('text-red-600');
-        }
-      });
+      // document.getElementById('aiDetectionForm').addEventListener('submit', function (e) {
+      //   e.preventDefault();
+      //   const result = document.getElementById('aiResult');
+      //   const imageFile = document.getElementById('coralImage').files[0];
+      //   if (imageFile) {
+      //     // Mock AI result after image submission (replace this with your AI API)
+      //     result.textContent = 'AI is analyzing the image... (Mock result: Coral is healthy!)';
+      //     result.classList.remove('text-green-600');
+      //     result.classList.add('text-blue-600');
+      //   } else {
+      //     result.textContent = 'Please upload an image of your coral.';
+      //     result.classList.remove('text-green-600');
+      //     result.classList.add('text-red-600');
+      //   }
+      // });
     </script>
 
   </body>

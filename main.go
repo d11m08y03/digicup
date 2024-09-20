@@ -13,6 +13,7 @@ func main() {
 	router := gin.Default()
   routes.RegisterStaticRoutes(router)
 	routes.RegisterUserRoutes(router)
+  routes.RegisterAIRoutes(router)
   routes.RegisterCoralRoutes(router)
 
 	router.Run(":8080")
