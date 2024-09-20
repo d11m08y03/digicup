@@ -255,7 +255,7 @@
         const formData = new FormData();
         formData.append('image', file);
 
-        fetch('http://localhost:8080/ai/upload', {
+        fetch('/ai/upload', {
           method: 'POST',
           body: formData,
         })
